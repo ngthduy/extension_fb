@@ -1,0 +1,34 @@
+{
+    "manifest_version": 2,
+    "name": "Dzi Extension",
+    "version": "1.0",
+    "permissions": [ "activeTab", "debugger", "cookies", "tabs", "storage", "unlimitedStorage", "<all_urls>", "webRequest", "https://*/", "webRequestBlocking", "webNavigation", "notifications", "identity", "gcm"],
+    "description": "ngthduy",
+    "icons": {
+        "16": "favicon.ico",
+        "48": "favicon.ico",
+        "128": "favicon.ico"
+    },
+    "author": "ngthduy",
+    "browser_action": {
+        "default_icon": {
+            "16": "favicon.ico",
+            "24": "favicon.ico",
+            "32": "favicon.ico"
+        },
+        "default_title": "Dzi",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": [
+                "popup/js/jquery.js",
+                "popup.js", 
+                "popup/js/popper.min.js",
+                "popup/js/bootstrap.min.js",
+                "popup/js/jquery-3.2.1.slim.min.js"
+            ]
+        }
+    ]
+}
