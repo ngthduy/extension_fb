@@ -11,19 +11,12 @@ function loadCookie() {
     chrome.cookies.getAll({ url: currentUrl }, function (cookie) {
       var result = "";
       for (var i = 0; i < cookie.length; i++) {
-        console.log(cookie[i]);
         result += cookie[i].name + "=" + cookie[i].value + ";\n";
         if (cookie[i].name == "c_user" || cookie[i].name == "xs") {
           currentUid = cookie[i].value;
           hash_cookie[cookie[i].name] = cookie[i].value;
         }
       }
-      //   $.each(hash_cookie, function (key, val) {
-      //     $("table.list-cookie").append(
-      //       "<tr><td>" + key + "</td><td>" + val + "</td></tr>"
-      //     );
-      //   });
-      //   $('table.list-cookie').show();
       chrome.tabs.getSelected(null, function (tab) {
         chrome.tabs.executeScript(
           tab.id,
@@ -65,44 +58,13 @@ function setCookie(key, val, expiry) {
       expirationDate: 1655213071.160959,
     },
     function (cookie) {
-    //   console.log(cookie);
+      //   console.log(cookie);
     }
   );
   chrome.tabs.getSelected(null, function (tab) {
     var code = "window.location.reload();";
     chrome.tabs.executeScript(tab.id, { code: code });
   });
-  //   chrome.cookies.set({
-  //     url: "https://upload.facebook.com",
-  //     name: key,
-  //     value: val,
-  //   });
-  //   chrome.cookies.set({
-  //     url: "https://business.facebook.com",
-  //     name: key,
-  //     value: val,
-  //   });
-  //   chrome.cookies.set({
-  //     url: "https://web.facebook.com",
-  //     name: key,
-  //     value: val,
-  //   });
-  //   chrome.cookies.set({ url: "https://m.facebook.com", name: key, value: val });
-  //   chrome.cookies.set({
-  //     url: "https://mbasic.facebook.com",
-  //     name: key,
-  //     value: val,
-  //   });
-  //   chrome.cookies.set({
-  //     url: "https://developers.facebook.com",
-  //     name: key,
-  //     value: val,
-  //   });
-  //   chrome.cookies.set({
-  //     url: "https://mobile.facebook.com",
-  //     name: key,
-  //     value: val,
-  //   });
 }
 function loadObject(obj) {
   $.each(obj, function (key, val) {
@@ -122,7 +84,11 @@ function loadObject(obj) {
   loadCookie();
 }
 loadCookie();
+
 document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("btnGetFile").onclick = function () {
+    document.getElementById("btnImportCookie").click();
+  };
   document.getElementById("btnDownloadCookie").onclick = function () {
     now_day = new Date().toISOString().split("T")[0];
     fileName =
@@ -147,4 +113,48 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     reader.readAsText(event.target.files[0]);
   };
+  document.getElementById("btnLike").onclick = function () {
+    console.log('1');
+  };
 });
+
+function like_posts() {
+  let timePerAction = 1000;
+  // Don't modify code below
+  (() => {
+    console.log("\x1b[36m%s\x1b[0m", "Code by JayremntB, 2020");
+    console.log(
+      "\x1b[36m%s\x1b[0m",
+      "Please remember if you meet an error, just reload page, wait for 3 seconds and run the code again"
+    );
+    if (timePerAction < 500)
+      return console.error("timePerAction must greater than 500");
+    let buttonIndex = 0;
+    setTimeout(function continuousWhenPageLoad() {
+      // get list of "Liked" buttons
+      let listLikedButtons = document.getElementsByClassName("e71nayrh  _18vj");
+      if (
+        buttonIndex > listLikedButtons.length - 1 ||
+        listLikedButtons.length === 0
+      )
+        return console.warn("Not found any posts");
+      setTimeout(function clickNextButton() {
+        if (buttonIndex > listLikedButtons.length - 1) {
+          window.scrollTo(0, document.body.scrollHeight); // scroll to the end of page
+          setTimeout(continuousWhenPageLoad, 3000);
+          return;
+        }
+        if (
+          listLikedButtons[buttonIndex].firstChild.getAttribute("class") !=
+          "q9uorilb sf5mxxl7"
+        ) {
+          listLikedButtons[buttonIndex].click(); // click Like button
+          console.log(`Liked post ${buttonIndex} successfully!`);
+        } else console.log("You had liked this post");
+        buttonIndex++;
+        setTimeout(clickNextButton, timePerAction);
+      }, 0);
+    }, 0);
+  })();
+}
+// like_posts();
