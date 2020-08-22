@@ -2,6 +2,7 @@
 <meta charset="UTF-8">
 
 <html>
+<title>Dzi Extension</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <script src="popup/js/jquery-3.2.1.slim.min.js"></script>
 <script src="popup/js/popper.min.js"></script>
@@ -20,6 +21,11 @@
 
     .dropdown-item:hover {
         background-color: #ccc;
+        color: cornflowerblue;
+    }
+
+    .menu {
+        margin-bottom: 10px;
     }
 </style>
 
@@ -29,20 +35,25 @@
             <label id='UrlCookieCurrent'
                 style="color: #f16625;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: inline-block;vertical-align: top;font-weight: bold;"></label>
         </label>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                FaceBook
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#" id="btnClearCookie">Clear Cookie</a>
-                <a class="dropdown-item" href="#" id="btnDownloadCookie">Download Cookie</a>
-                <a class="dropdown-item" href="#" id="btnGetFile">Import Cookie</a>
-                <a class="dropdown-item" href="#" id="btnLike">Like</a>
-
+        <div class="row menu">
+            <div class="col-6">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        FaceBook
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#" id="btnClearCookie">Clear Cookie</a>
+                        <a class="dropdown-item" href="#" id="btnDownloadCookie">Download Cookie</a>
+                        <a class="dropdown-item" href="#" id="btnGetFile">Import Cookie</a>
+                        <!-- <a class="dropdown-item" href="#" id="btnLike">Like</a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <p id="status"></p>
             </div>
         </div>
-        <br>
         <textarea id="cookieResult" rows="5" style="width:100%;word-break: break-all;"></textarea>
         <div style="overflow-x:auto;">
             <table class="list-cookie table-bordered" style="display: none;">

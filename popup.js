@@ -66,6 +66,14 @@ function setCookie(key, val, expiry) {
     chrome.tabs.executeScript(tab.id, { code: code });
   });
 }
+function clearCookie(){
+  chrome.cookies.remove({"url": "https://www.facebook.com", "name": "xs"}, function(deleted_cookie) {  });
+  chrome.cookies.remove({"url": "https://www.facebook.com", "name": "c_user"}, function(deleted_cookie) { });
+  chrome.tabs.getSelected(null, function (tab) {
+    var code = "window.location.reload();";
+    chrome.tabs.executeScript(tab.id, { code: code });
+  });
+}
 function loadObject(obj) {
   $.each(obj, function (key, val) {
     $("table.list-cookie tbody").append(
@@ -88,6 +96,9 @@ loadCookie();
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("btnGetFile").onclick = function () {
     document.getElementById("btnImportCookie").click();
+  };
+  document.getElementById("btnClearCookie").onclick = function () {
+    clearCookie();
   };
   document.getElementById("btnDownloadCookie").onclick = function () {
     now_day = new Date().toISOString().split("T")[0];
