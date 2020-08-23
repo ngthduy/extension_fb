@@ -66,9 +66,9 @@ function setCookie(key, val, expiry) {
     chrome.tabs.executeScript(tab.id, { code: code });
   });
 }
-function clearCookie(){
-  chrome.cookies.remove({"url": "https://www.facebook.com", "name": "xs"}, function(deleted_cookie) {  });
-  chrome.cookies.remove({"url": "https://www.facebook.com", "name": "c_user"}, function(deleted_cookie) { });
+function clearCookie() {
+  chrome.cookies.remove({ "url": "https://www.facebook.com", "name": "xs" }, function (deleted_cookie) { });
+  chrome.cookies.remove({ "url": "https://www.facebook.com", "name": "c_user" }, function (deleted_cookie) { });
   chrome.tabs.getSelected(null, function (tab) {
     var code = "window.location.reload();";
     chrome.tabs.executeScript(tab.id, { code: code });
@@ -84,8 +84,8 @@ function loadObject(obj) {
   var count = Object.keys(obj).length;
   $("table.list-cookie tbody").append(
     "<tr><td colspan='2' style='text-align:left; font-weight:bold'>Insert " +
-      count +
-      " cookie succcessfully</td></tr>"
+    count +
+    " cookie succcessfully</td></tr>"
   );
   $("table.list-cookie").show();
   $("table.list-cookie tbody td").css("padding", "10px");
@@ -99,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   document.getElementById("btnClearCookie").onclick = function () {
     clearCookie();
+    document.getElementById("status").innerHTML = "LogOut Success";
+    document.getElementById("status").style.color = "#3260a8";
   };
   document.getElementById("btnDownloadCookie").onclick = function () {
     now_day = new Date().toISOString().split("T")[0];
@@ -114,6 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
     a.download = fileName;
     a.click();
     window.URL.revokeObjectURL(url);
+    document.getElementById("status").innerHTML = "Dowload Success";
+    document.getElementById("status").style.color = "#3260a8";
   };
   document.getElementById("btnImportCookie").onchange = function () {
     var reader = new FileReader();
@@ -123,49 +127,46 @@ document.addEventListener("DOMContentLoaded", function () {
       loadObject(JSON.parse(event.target.result));
     };
     reader.readAsText(event.target.files[0]);
+    document.getElementById("status").innerHTML = "LogIn Success";
+    document.getElementById("status").style.color = "#3260a8";
   };
   document.getElementById("btnLike").onclick = function () {
-    console.log('1');
+    chrome.tabs.getSelected(null, function (tab) {
+      var code = `
+      let timePerAction = 1000;
+      (() => {
+        console.log("\x1b[36m%s\x1b[0m", "Code by JayremntB, 2020");
+        console.log(
+          "\x1b[36m%s\x1b[0m",
+          "Please remember if you meet an error, just reload page, wait for 3 seconds and run the code again"
+        );
+        if (timePerAction < 500)
+          return console.error("timePerAction must greater than 500");
+        let buttonIndex = 0;
+        setTimeout(function continuousWhenPageLoad() {
+          let listLikedButtons = document.getElementsByClassName("e71nayrh  _18vj");
+          if (buttonIndex > listLikedButtons.length - 1 || listLikedButtons.length === 0)
+            return console.warn("Not found any posts");
+          setTimeout(function clickNextButton() {
+            if (buttonIndex > listLikedButtons.length - 1) {
+              window.scrollTo(0, document.body.scrollHeight); // scroll to the end of page
+              setTimeout(continuousWhenPageLoad, 3000);
+              return;
+            }
+            if (
+              listLikedButtons[buttonIndex].firstChild.getAttribute("class") !=
+              "q9uorilb sf5mxxl7"
+            ) {
+              listLikedButtons[buttonIndex].click(); // click Like button
+              console.log('Liked post '+buttonIndex+' successfully!');
+            } else console.log("You had liked this post");
+            buttonIndex++;
+            setTimeout(clickNextButton, timePerAction);
+          }, 0);
+        }, 0);
+      })();`;
+      chrome.tabs.executeScript(tab.id, { code: code });
+    });
   };
 });
 
-function like_posts() {
-  let timePerAction = 1000;
-  // Don't modify code below
-  (() => {
-    console.log("\x1b[36m%s\x1b[0m", "Code by JayremntB, 2020");
-    console.log(
-      "\x1b[36m%s\x1b[0m",
-      "Please remember if you meet an error, just reload page, wait for 3 seconds and run the code again"
-    );
-    if (timePerAction < 500)
-      return console.error("timePerAction must greater than 500");
-    let buttonIndex = 0;
-    setTimeout(function continuousWhenPageLoad() {
-      // get list of "Liked" buttons
-      let listLikedButtons = document.getElementsByClassName("e71nayrh  _18vj");
-      if (
-        buttonIndex > listLikedButtons.length - 1 ||
-        listLikedButtons.length === 0
-      )
-        return console.warn("Not found any posts");
-      setTimeout(function clickNextButton() {
-        if (buttonIndex > listLikedButtons.length - 1) {
-          window.scrollTo(0, document.body.scrollHeight); // scroll to the end of page
-          setTimeout(continuousWhenPageLoad, 3000);
-          return;
-        }
-        if (
-          listLikedButtons[buttonIndex].firstChild.getAttribute("class") !=
-          "q9uorilb sf5mxxl7"
-        ) {
-          listLikedButtons[buttonIndex].click(); // click Like button
-          console.log(`Liked post ${buttonIndex} successfully!`);
-        } else console.log("You had liked this post");
-        buttonIndex++;
-        setTimeout(clickNextButton, timePerAction);
-      }, 0);
-    }, 0);
-  })();
-}
-// like_posts();
